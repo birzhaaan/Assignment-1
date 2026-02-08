@@ -1,0 +1,54 @@
+### 401 without API key
+GET http://localhost:8080/tasks
+
+###
+
+### Get all tasks
+GET http://localhost:8080/tasks
+X-API-KEY: secret12345
+
+###
+
+### Create task
+POST http://localhost:8080/tasks
+Content-Type: application/json
+X-API-KEY: secret12345
+
+{
+  "title": "Write unit tests"
+}
+
+###
+
+### Get task by id
+GET http://localhost:8080/tasks?id=2
+X-API-KEY: secret12345
+
+###
+
+### Update task done=true
+PATCH http://localhost:8080/tasks?id=2
+Content-Type: application/json
+X-API-KEY: secret12345
+
+{
+  "done": true
+}
+
+###
+
+### Filter done=true
+GET http://localhost:8080/tasks?done=true
+X-API-KEY: secret12345
+
+###
+
+### Delete task
+DELETE http://localhost:8080/tasks?id=2
+X-API-KEY: secret12345
+
+###
+
+### External API todos
+GET http://localhost:8080/external/todos
+X-API-KEY: secret12345
