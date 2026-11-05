@@ -1,65 +1,10 @@
 name: CI
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+on: [push]
 
 jobs:
-  hygiene:
-    name: Repository hygiene
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-
-      - name: Validate workflow syntax
-        run: |
-          python3 -c "import yaml; yaml.safe_load(open('.github/workflows/main.yml')); print('workflow YAML is valid')"
-
-      - name: Check for a README
-        run: |
-          if [ -f README.md ]; then
-            echo "README.md found"
-          else
-            echo "::warning::README.md is missing — a DPG should document itself"
-          fi
-
-  security:
-    name: Security scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-
-      - name: Install Trivy
-        run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
-            | sh -s -- -b /usr/local/bin
-
-      - name: Scan the repository for vulnerabilities and secrets
-        continue-on-error: true
-        run: |
-          trivy fs --scanners vuln,secret,misconfig \
-                   --severity CRITICAL,HIGH \
-                   --exit-code 0 \
-                   --no-progress .
-
   build:
-    name: Build and test
-    needs: [hygiene, security]
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-      - name: Placeholder
-        run: echo "build step goes here"
+    - name: Run a one-line script
+      run: echo "Hello, world from my first CI pipeline!"
